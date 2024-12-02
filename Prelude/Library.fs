@@ -111,12 +111,10 @@ module Prelude =
         let sr = new System.IO.StreamReader(stream)
         repeatedly sr.ReadLine |> Seq.takeWhile ((<>) null)
 
-    let slurp = System.IO.File.OpenRead >> lines
-
-    let slurpOrStdin path =
+    let fileOrStdin path =
         match path with
-        | "-" -> System.Console.OpenStandardInput 4096 |> lines
-        | _ -> slurp path
+        | "-" -> System.Console.OpenStandardInput 4096
+        | _ -> System.IO.File.OpenRead path
 
     let takeWhile = Seq.takeWhile
 
