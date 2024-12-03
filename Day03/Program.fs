@@ -11,18 +11,19 @@ let resolve t =
     | Mul(x, y) -> x * y
     | _ -> 0
 
-let lexMul: Parser<Option<Token>, unit> =
+let lexMul: Parser<Token, unit> =
     tuple2 (pstring "mul(" >>. pint32) (between (pchar ',') (pchar ')') pint32)
-    |>> (Mul >> Some)
+    |>> Mul
 
-let lexDo: Parser<Option<Token>, unit> = pstring "do()" >>% Some Do
+let lexDo: Parser<Token, unit> = pstring "do()" >>% Do
 
-let lexDon't: Parser<Option<Token>, unit> = pstring "don't()" >>% Some Don't
+let lexDon't: Parser<Token, unit> = pstring "don't()" >>% Don't
+
+let lexValid = List.map attempt [ lexMul; lexDo; lexDon't ] |> choice |>> Some
 
 let lexNoOp: Parser<Option<Token>, unit> = anyChar >>% None
 
-let lexToken: Parser<Option<Token>, unit> =
-    choice (List.map attempt [ lexMul; lexDo; lexDon't; lexNoOp ])
+let lexToken: Parser<Option<Token>, unit> = lexValid <|> lexNoOp
 
 let lexLine = many lexToken |>> List.collect Option.toList
 
