@@ -12,7 +12,8 @@ let resolve t =
     | _ -> 0
 
 let lexMul: Parser<Option<Token>, unit> =
-    pipe2 (pstring "mul(" >>. pint32) (between (pchar ',') (pchar ')') pint32) (fun x y -> Some(Mul(x, y)))
+    tuple2 (pstring "mul(" >>. pint32) (between (pchar ',') (pchar ')') pint32)
+    |>> (Mul >> Some)
 
 let lexDo: Parser<Option<Token>, unit> = pstring "do()" >>% Some Do
 
