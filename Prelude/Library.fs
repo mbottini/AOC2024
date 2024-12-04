@@ -183,3 +183,11 @@ module Prelude =
             Option.orElse (Some 0) x |> Option.map ((+) 1)
 
         Seq.fold (fun m x -> Map.change x increment m) Map.empty xs
+
+    let triplewise xs : seq<'a * 'a * 'a> =
+        let helper arr =
+            match arr with
+            | [| x; y; z |] -> (x, y, z)
+            | _ -> failwith "this should never happen"
+
+        Seq.windowed 3 xs |> Seq.map helper

@@ -41,14 +41,6 @@ let createGrid xss =
     |> Seq.map (prependAndAppend None)
     |> prependAndAppend (repeat None)
 
-let triplewise xs : seq<'a * 'a * 'a> =
-    let helper arr =
-        match arr with
-        | [| x; y; z |] -> (x, y, z)
-        | _ -> failwith "this should never happen"
-
-    Seq.windowed 3 xs |> Seq.map helper
-
 let getNeighbors ante curr post =
     seq {
         for ((nw, n, ne), (w, o, e), (sw, s, se)) in Seq.zip3 (triplewise ante) (triplewise curr) (triplewise post) do
