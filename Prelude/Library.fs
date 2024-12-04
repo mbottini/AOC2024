@@ -7,6 +7,8 @@ module Prelude =
 
     let uncurry f = fun (x, y) -> f x y
 
+    let uncurry3 f = fun (x, y, z) -> f x y z
+
     let flip f = fun x y -> f y x
     let ignore2 _ _ = ()
 
