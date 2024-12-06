@@ -112,7 +112,17 @@ let part1 board =
     traverse board p |> Seq.map _.coord |> Set |> Set.count
 
 let isCycle ps =
-    Seq.scan (flip Set.add) Set.empty ps |> Seq.pairwise |> Seq.exists (uncurry (=))
+    let mutable st = Set.empty
+
+    seq {
+        for p in ps do
+            if Set.contains p st then
+                yield ()
+
+            st <- Set.add p st
+    }
+    |> Seq.isEmpty
+    |> not
 
 let placeObstacle (board: array<array<Terrain>>) { x = x; y = y } =
     let arr = board[y]
