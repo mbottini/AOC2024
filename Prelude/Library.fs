@@ -191,3 +191,5 @@ module Prelude =
             | _ -> failwith "this should never happen"
 
         Seq.windowed 3 xs |> Seq.map helper
+
+    let join (c: char) (sq: seq<string>) = System.String.Join(c, sq)
