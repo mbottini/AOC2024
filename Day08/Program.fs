@@ -1,20 +1,21 @@
 ﻿open Prelude.Prelude
 
-type Coord = { x: int; y: int }
+type Coord =
+    { x: int
+      y: int }
 
-type Vector = Vector of Coord
+    static member (-)({ x = x1; y = y1 }, { x = x2; y = y2 }) = Vector { x = x1 - x2; y = y1 - y2 }
+    static member (+)({ x = x1; y = y1 }, (Vector { x = x2; y = y2 })) = { x = x1 - x2; y = y1 - y2 }
 
-let diff { x = x1; y = y1 } { x = x2; y = y2 } = Vector { x = x2 - x1; y = y2 - y1 }
+and Vector =
+    | Vector of Coord
 
-let scalarMul n (Vector { x = x; y = y }) = Vector { x = n * x; y = n * y }
+    static member (*)(n, Vector { x = x; y = y }) = Vector { x = n * x; y = n * y }
+    static member (~-)(Vector { x = x; y = y }) = Vector { x = (-x); y = (-y) }
 
-let inverse (Vector { x = x; y = y }) = Vector { x = (-x); y = (-y) }
-
-let add { x = x1; y = y1 } (Vector { x = x2; y = y2 }) = { x = x1 + x2; y = y1 + y2 }
-
-let antinodes n c1 c2 =
-    let vec = diff c1 c2 |> scalarMul n
-    [ add c1 (inverse vec); add c2 vec ]
+let antinodes n (c1: Coord) (c2: Coord) =
+    let vec = c1 - c2 |> (fun v -> n * v)
+    [ c1 + (-vec); c2 + vec ]
 
 type Antenna = { coord: Coord; value: char }
 
