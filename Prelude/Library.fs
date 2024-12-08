@@ -193,3 +193,17 @@ module Prelude =
         Seq.windowed 3 xs |> Seq.map helper
 
     let join (c: char) (sq: seq<string>) = System.String.Join(c, sq)
+
+    let rec combinations n xs =
+        match (n, xs) with
+        | 0, _ -> Seq.singleton []
+        | n, [] -> Seq.empty
+        | n, x :: xs ->
+            let picked = Seq.map (fun ys -> x :: ys) (combinations (n - 1) xs)
+            let skipped = combinations n xs
+            Seq.append picked skipped
+
+    let tuple2 xs =
+        match Seq.toList xs with
+        | [ x; y ] -> (x, y)
+        | _ -> failwith "not a 2-element sequence"
