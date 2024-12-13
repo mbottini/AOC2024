@@ -207,3 +207,13 @@ module Prelude =
         match Seq.toList xs with
         | [ x; y ] -> (x, y)
         | _ -> failwith "not a 2-element sequence"
+
+    let tuple3 xs =
+        match Seq.toList xs with
+        | [ x; y; z ] -> (x, y, z)
+        | _ -> failwith "not a 3-element sequence"
+
+    let tuple4 xs =
+        match Seq.toList xs with
+        | [ w; x; y; z ] -> (w, x, y, z)
+        | _ -> failwith "not a 4-element sequence"
