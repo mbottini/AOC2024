@@ -217,3 +217,6 @@ module Prelude =
         match Seq.toList xs with
         | [ w; x; y; z ] -> (w, x, y, z)
         | _ -> failwith "not a 4-element sequence"
+
+    let merge (m1: Map<'a, 'b>) (m2: Map<'a, 'b>) =
+        Seq.fold (fun acc (k, v) -> Map.add k v acc) m1 (Map.toSeq m2)
